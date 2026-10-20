@@ -14,6 +14,17 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
+import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
+import { Route as AuthenticatedPortalBillingRouteImport } from './routes/_authenticated/portal.billing'
+import { Route as AuthenticatedPortalFilesRouteImport } from './routes/_authenticated/portal.files'
+import { Route as AuthenticatedPortalMeetingsRouteImport } from './routes/_authenticated/portal.meetings'
+import { Route as AuthenticatedPortalMessagesRouteImport } from './routes/_authenticated/portal.messages'
+import { Route as AuthenticatedPortalNotificationsRouteImport } from './routes/_authenticated/portal.notifications'
+import { Route as AuthenticatedPortalProjectsRouteImport } from './routes/_authenticated/portal.projects'
+import { Route as AuthenticatedPortalReportsRouteImport } from './routes/_authenticated/portal.reports'
+import { Route as AuthenticatedPortalServicesRouteImport } from './routes/_authenticated/portal.services'
+import { Route as AuthenticatedPortalSettingsRouteImport } from './routes/_authenticated/portal.settings'
+import { Route as AuthenticatedPortalSupportRouteImport } from './routes/_authenticated/portal.support'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,18 +50,105 @@ const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPortalIndexRoute =
+  AuthenticatedPortalIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalBillingRoute =
+  AuthenticatedPortalBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalFilesRoute =
+  AuthenticatedPortalFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalMeetingsRoute =
+  AuthenticatedPortalMeetingsRouteImport.update({
+    id: '/meetings',
+    path: '/meetings',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalMessagesRoute =
+  AuthenticatedPortalMessagesRouteImport.update({
+    id: '/messages',
+    path: '/messages',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalNotificationsRoute =
+  AuthenticatedPortalNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalProjectsRoute =
+  AuthenticatedPortalProjectsRouteImport.update({
+    id: '/projects',
+    path: '/projects',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalReportsRoute =
+  AuthenticatedPortalReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalServicesRoute =
+  AuthenticatedPortalServicesRouteImport.update({
+    id: '/services',
+    path: '/services',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalSettingsRoute =
+  AuthenticatedPortalSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalSupportRoute =
+  AuthenticatedPortalSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/portal': typeof AuthenticatedPortalRoute
+  '/portal': typeof AuthenticatedPortalRouteWithChildren
+  '/portal/billing': typeof AuthenticatedPortalBillingRoute
+  '/portal/files': typeof AuthenticatedPortalFilesRoute
+  '/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
+  '/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/portal/projects': typeof AuthenticatedPortalProjectsRoute
+  '/portal/reports': typeof AuthenticatedPortalReportsRoute
+  '/portal/services': typeof AuthenticatedPortalServicesRoute
+  '/portal/settings': typeof AuthenticatedPortalSettingsRoute
+  '/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/portal/': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/portal': typeof AuthenticatedPortalRoute
+  '/portal/billing': typeof AuthenticatedPortalBillingRoute
+  '/portal/files': typeof AuthenticatedPortalFilesRoute
+  '/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
+  '/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/portal/projects': typeof AuthenticatedPortalProjectsRoute
+  '/portal/reports': typeof AuthenticatedPortalReportsRoute
+  '/portal/services': typeof AuthenticatedPortalServicesRoute
+  '/portal/settings': typeof AuthenticatedPortalSettingsRoute
+  '/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/portal': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,13 +156,53 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/_authenticated/portal': typeof AuthenticatedPortalRoute
+  '/_authenticated/portal': typeof AuthenticatedPortalRouteWithChildren
+  '/_authenticated/portal/billing': typeof AuthenticatedPortalBillingRoute
+  '/_authenticated/portal/files': typeof AuthenticatedPortalFilesRoute
+  '/_authenticated/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
+  '/_authenticated/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/_authenticated/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/_authenticated/portal/projects': typeof AuthenticatedPortalProjectsRoute
+  '/_authenticated/portal/reports': typeof AuthenticatedPortalReportsRoute
+  '/_authenticated/portal/services': typeof AuthenticatedPortalServicesRoute
+  '/_authenticated/portal/settings': typeof AuthenticatedPortalSettingsRoute
+  '/_authenticated/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/_authenticated/portal/': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/reset-password' | '/portal'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/portal'
+    | '/portal/billing'
+    | '/portal/files'
+    | '/portal/meetings'
+    | '/portal/messages'
+    | '/portal/notifications'
+    | '/portal/projects'
+    | '/portal/reports'
+    | '/portal/services'
+    | '/portal/settings'
+    | '/portal/support'
+    | '/portal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/reset-password' | '/portal'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/portal/billing'
+    | '/portal/files'
+    | '/portal/meetings'
+    | '/portal/messages'
+    | '/portal/notifications'
+    | '/portal/projects'
+    | '/portal/reports'
+    | '/portal/services'
+    | '/portal/settings'
+    | '/portal/support'
+    | '/portal'
   id:
     | '__root__'
     | '/'
@@ -72,6 +210,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/_authenticated/portal'
+    | '/_authenticated/portal/billing'
+    | '/_authenticated/portal/files'
+    | '/_authenticated/portal/meetings'
+    | '/_authenticated/portal/messages'
+    | '/_authenticated/portal/notifications'
+    | '/_authenticated/portal/projects'
+    | '/_authenticated/portal/reports'
+    | '/_authenticated/portal/services'
+    | '/_authenticated/portal/settings'
+    | '/_authenticated/portal/support'
+    | '/_authenticated/portal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,15 +267,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/': {
+      id: '/_authenticated/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof AuthenticatedPortalIndexRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/billing': {
+      id: '/_authenticated/portal/billing'
+      path: '/billing'
+      fullPath: '/portal/billing'
+      preLoaderRoute: typeof AuthenticatedPortalBillingRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/files': {
+      id: '/_authenticated/portal/files'
+      path: '/files'
+      fullPath: '/portal/files'
+      preLoaderRoute: typeof AuthenticatedPortalFilesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/meetings': {
+      id: '/_authenticated/portal/meetings'
+      path: '/meetings'
+      fullPath: '/portal/meetings'
+      preLoaderRoute: typeof AuthenticatedPortalMeetingsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/messages': {
+      id: '/_authenticated/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof AuthenticatedPortalMessagesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/notifications': {
+      id: '/_authenticated/portal/notifications'
+      path: '/notifications'
+      fullPath: '/portal/notifications'
+      preLoaderRoute: typeof AuthenticatedPortalNotificationsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/projects': {
+      id: '/_authenticated/portal/projects'
+      path: '/projects'
+      fullPath: '/portal/projects'
+      preLoaderRoute: typeof AuthenticatedPortalProjectsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/reports': {
+      id: '/_authenticated/portal/reports'
+      path: '/reports'
+      fullPath: '/portal/reports'
+      preLoaderRoute: typeof AuthenticatedPortalReportsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/services': {
+      id: '/_authenticated/portal/services'
+      path: '/services'
+      fullPath: '/portal/services'
+      preLoaderRoute: typeof AuthenticatedPortalServicesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/settings': {
+      id: '/_authenticated/portal/settings'
+      path: '/settings'
+      fullPath: '/portal/settings'
+      preLoaderRoute: typeof AuthenticatedPortalSettingsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/support': {
+      id: '/_authenticated/portal/support'
+      path: '/support'
+      fullPath: '/portal/support'
+      preLoaderRoute: typeof AuthenticatedPortalSupportRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
   }
 }
 
+interface AuthenticatedPortalRouteChildren {
+  AuthenticatedPortalBillingRoute: typeof AuthenticatedPortalBillingRoute
+  AuthenticatedPortalFilesRoute: typeof AuthenticatedPortalFilesRoute
+  AuthenticatedPortalMeetingsRoute: typeof AuthenticatedPortalMeetingsRoute
+  AuthenticatedPortalMessagesRoute: typeof AuthenticatedPortalMessagesRoute
+  AuthenticatedPortalNotificationsRoute: typeof AuthenticatedPortalNotificationsRoute
+  AuthenticatedPortalProjectsRoute: typeof AuthenticatedPortalProjectsRoute
+  AuthenticatedPortalReportsRoute: typeof AuthenticatedPortalReportsRoute
+  AuthenticatedPortalServicesRoute: typeof AuthenticatedPortalServicesRoute
+  AuthenticatedPortalSettingsRoute: typeof AuthenticatedPortalSettingsRoute
+  AuthenticatedPortalSupportRoute: typeof AuthenticatedPortalSupportRoute
+  AuthenticatedPortalIndexRoute: typeof AuthenticatedPortalIndexRoute
+}
+
+const AuthenticatedPortalRouteChildren: AuthenticatedPortalRouteChildren = {
+  AuthenticatedPortalBillingRoute: AuthenticatedPortalBillingRoute,
+  AuthenticatedPortalFilesRoute: AuthenticatedPortalFilesRoute,
+  AuthenticatedPortalMeetingsRoute: AuthenticatedPortalMeetingsRoute,
+  AuthenticatedPortalMessagesRoute: AuthenticatedPortalMessagesRoute,
+  AuthenticatedPortalNotificationsRoute: AuthenticatedPortalNotificationsRoute,
+  AuthenticatedPortalProjectsRoute: AuthenticatedPortalProjectsRoute,
+  AuthenticatedPortalReportsRoute: AuthenticatedPortalReportsRoute,
+  AuthenticatedPortalServicesRoute: AuthenticatedPortalServicesRoute,
+  AuthenticatedPortalSettingsRoute: AuthenticatedPortalSettingsRoute,
+  AuthenticatedPortalSupportRoute: AuthenticatedPortalSupportRoute,
+  AuthenticatedPortalIndexRoute: AuthenticatedPortalIndexRoute,
+}
+
+const AuthenticatedPortalRouteWithChildren =
+  AuthenticatedPortalRoute._addFileChildren(AuthenticatedPortalRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
+  AuthenticatedPortalRoute: typeof AuthenticatedPortalRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedPortalRoute: AuthenticatedPortalRoute,
+  AuthenticatedPortalRoute: AuthenticatedPortalRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
