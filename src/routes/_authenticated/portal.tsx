@@ -80,7 +80,3 @@ function PortalLayout() {
   );
 }
 
-export function usePortal() {
-  const ctx = Route.useRouteContext();
-  return { client: ctx.client!, user: ctx.user };
-}
