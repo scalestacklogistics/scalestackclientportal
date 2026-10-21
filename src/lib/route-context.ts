@@ -13,3 +13,9 @@ export function usePortal() {
 export function useAuthCtx() {
   return authApi.useRouteContext();
 }
+
+const adminApi = getRouteApi("/_authenticated/admin");
+/** Staff user inside /admin, with whether they are an owner/admin. */
+export function useAdmin() {
+  return adminApi.useRouteContext();
+}
