@@ -663,6 +663,13 @@ export type Database = {
             referencedRelation: "plans"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans_with_service"
+            referencedColumns: ["id"]
+          },
         ]
       }
       team_assignments: {
@@ -758,7 +765,13 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      plans_with_service: {
+        Row: {
+          id: string | null
+          label: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_access_client: { Args: { _client: string }; Returns: boolean }
