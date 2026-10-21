@@ -15,6 +15,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminClientsRouteImport } from './routes/_authenticated/admin.clients'
 import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
 import { Route as AuthenticatedPortalBillingRouteImport } from './routes/_authenticated/portal.billing'
 import { Route as AuthenticatedPortalFilesRouteImport } from './routes/_authenticated/portal.files'
@@ -56,6 +58,17 @@ const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminClientsRoute =
+  AuthenticatedAdminClientsRouteImport.update({
+    id: '/clients',
+    path: '/clients',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedPortalIndexRoute =
   AuthenticatedPortalIndexRouteImport.update({
     id: '/',
@@ -127,8 +140,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/portal': typeof AuthenticatedPortalRouteWithChildren
+  '/admin/clients': typeof AuthenticatedAdminClientsRoute
   '/portal/billing': typeof AuthenticatedPortalBillingRoute
   '/portal/files': typeof AuthenticatedPortalFilesRoute
   '/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
@@ -139,13 +153,14 @@ export interface FileRoutesByFullPath {
   '/portal/services': typeof AuthenticatedPortalServicesRoute
   '/portal/settings': typeof AuthenticatedPortalSettingsRoute
   '/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/portal/': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin/clients': typeof AuthenticatedAdminClientsRoute
   '/portal/billing': typeof AuthenticatedPortalBillingRoute
   '/portal/files': typeof AuthenticatedPortalFilesRoute
   '/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
@@ -156,6 +171,7 @@ export interface FileRoutesByTo {
   '/portal/services': typeof AuthenticatedPortalServicesRoute
   '/portal/settings': typeof AuthenticatedPortalSettingsRoute
   '/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/portal': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRoutesById {
@@ -164,8 +180,9 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/portal': typeof AuthenticatedPortalRouteWithChildren
+  '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRoute
   '/_authenticated/portal/billing': typeof AuthenticatedPortalBillingRoute
   '/_authenticated/portal/files': typeof AuthenticatedPortalFilesRoute
   '/_authenticated/portal/meetings': typeof AuthenticatedPortalMeetingsRoute
@@ -176,6 +193,7 @@ export interface FileRoutesById {
   '/_authenticated/portal/services': typeof AuthenticatedPortalServicesRoute
   '/_authenticated/portal/settings': typeof AuthenticatedPortalSettingsRoute
   '/_authenticated/portal/support': typeof AuthenticatedPortalSupportRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/portal/': typeof AuthenticatedPortalIndexRoute
 }
 export interface FileRouteTypes {
@@ -186,6 +204,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/admin'
     | '/portal'
+    | '/admin/clients'
     | '/portal/billing'
     | '/portal/files'
     | '/portal/meetings'
@@ -196,13 +215,14 @@ export interface FileRouteTypes {
     | '/portal/services'
     | '/portal/settings'
     | '/portal/support'
+    | '/admin/'
     | '/portal/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/reset-password'
-    | '/admin'
+    | '/admin/clients'
     | '/portal/billing'
     | '/portal/files'
     | '/portal/meetings'
@@ -213,6 +233,7 @@ export interface FileRouteTypes {
     | '/portal/services'
     | '/portal/settings'
     | '/portal/support'
+    | '/admin'
     | '/portal'
   id:
     | '__root__'
@@ -222,6 +243,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/admin'
     | '/_authenticated/portal'
+    | '/_authenticated/admin/clients'
     | '/_authenticated/portal/billing'
     | '/_authenticated/portal/files'
     | '/_authenticated/portal/meetings'
@@ -232,6 +254,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/services'
     | '/_authenticated/portal/settings'
     | '/_authenticated/portal/support'
+    | '/_authenticated/admin/'
     | '/_authenticated/portal/'
   fileRoutesById: FileRoutesById
 }
@@ -285,6 +308,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/portal'
       preLoaderRoute: typeof AuthenticatedPortalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/clients': {
+      id: '/_authenticated/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AuthenticatedAdminClientsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/portal/': {
       id: '/_authenticated/portal/'
@@ -366,6 +403,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminClientsRoute: typeof AuthenticatedAdminClientsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminClientsRoute: AuthenticatedAdminClientsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedPortalRouteChildren {
   AuthenticatedPortalBillingRoute: typeof AuthenticatedPortalBillingRoute
   AuthenticatedPortalFilesRoute: typeof AuthenticatedPortalFilesRoute
@@ -398,12 +448,12 @@ const AuthenticatedPortalRouteWithChildren =
   AuthenticatedPortalRoute._addFileChildren(AuthenticatedPortalRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedPortalRoute: typeof AuthenticatedPortalRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedPortalRoute: AuthenticatedPortalRouteWithChildren,
 }
 
