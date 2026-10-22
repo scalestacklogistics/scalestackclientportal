@@ -121,7 +121,7 @@ export async function uploadClientFile(clientId: string, file: File, folder = "f
 
 export async function openClientFile(path: string) {
   const { data, error } = await supabase.storage.from("client-files").createSignedUrl(path, 60);
-  if (error) return toast.error(error.message);
+  if (error) { toast.error(error.message); return; }
   window.open(data.signedUrl, "_blank", "noopener");
 }
 

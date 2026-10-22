@@ -74,14 +74,14 @@ export function AccountSettings({ userId, email }: { userId: string; email?: str
       .from("profiles")
       .update({ full_name: name ?? profile.data?.full_name ?? null, phone: phone ?? profile.data?.phone ?? null, updated_at: new Date().toISOString() })
       .eq("id", userId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Profile saved");
     qc.invalidateQueries({ queryKey: ["profile", userId] });
   }
   async function changePassword(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.auth.updateUser({ password: pw, current_password: current } as never);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Password updated");
     setPw("");
     setCurrent("");
