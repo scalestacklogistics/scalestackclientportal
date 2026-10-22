@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/admin/services")({
 const categories = [
   ["website", "Website Development"], ["ecommerce", "Shopify & E-commerce"], ["marketing", "Digital Marketing"],
   ["ads", "Google, Meta & TikTok Ads"], ["seo", "SEO, GEO & AEO"], ["ai", "AI Chatbots & Automation"], ["design", "Graphic Design"],
-].map(([value, label]) => ({ value, label }));
+].map(([value, label]) => ({ value: value!, label: label! }));
 
 function Services() {
   const { isAdmin } = useAdmin();

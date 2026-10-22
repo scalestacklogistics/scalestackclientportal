@@ -154,7 +154,7 @@ export function RecordForm({
       }}
     >
       {fields.map((f) => (
-        <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => setValues((s) => ({ ...s, [f.name]: v }))} />
+        <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => setValues((s: Row) => ({ ...s, [f.name]: v }))} />
       ))}
       <Button type="submit" className="w-full" disabled={busy}>
         {submitLabel}

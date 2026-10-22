@@ -57,7 +57,7 @@ export function NotificationsView({ userId }: { userId: string }) {
   );
 }
 
-export function AccountSettings({ userId, email }: { userId: string; email?: string }) {
+export function AccountSettings({ userId, email }: { userId: string; email?: string | undefined }) {
   const qc = useQueryClient();
   const profile = useQuery({
     queryKey: ["profile", userId],
