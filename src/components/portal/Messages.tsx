@@ -45,7 +45,7 @@ export function MessageThread({ clientId, userId }: { clientId: string; userId: 
     e.preventDefault();
     if (!body.trim()) return;
     const { error } = await supabase.from("messages").insert({ client_id: clientId, sender_id: userId, body: body.trim() });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setBody("");
     qc.invalidateQueries({ queryKey: key });
   }

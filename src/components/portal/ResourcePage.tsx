@@ -14,7 +14,7 @@ import { EmptyState, PageHeader } from "./AppShell";
 import { logAudit } from "@/lib/auth";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Row = Record<string, any>;
+type Row = any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
 
@@ -121,7 +121,7 @@ export async function uploadClientFile(clientId: string, file: File, folder = "f
 
 export async function openClientFile(path: string) {
   const { data, error } = await supabase.storage.from("client-files").createSignedUrl(path, 60);
-  if (error) return toast.error(error.message);
+  if (error) { toast.error(error.message); return; }
   window.open(data.signedUrl, "_blank", "noopener");
 }
 
@@ -154,7 +154,7 @@ export function RecordForm({
       }}
     >
       {fields.map((f) => (
-        <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => setValues((s) => ({ ...s, [f.name]: v }))} />
+        <FieldInput key={f.name} field={f} value={values[f.name]} onChange={(v) => setValues((s: Row) => ({ ...s, [f.name]: v }))} />
       ))}
       <Button type="submit" className="w-full" disabled={busy}>
         {submitLabel}

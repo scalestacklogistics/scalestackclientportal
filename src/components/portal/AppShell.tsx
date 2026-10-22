@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
-export type NavItem = { to: string; label: string; icon: LucideIcon; exact?: boolean };
+export type NavItem = { to: string; label: string; icon: LucideIcon; exact?: boolean | undefined };
 
 function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => void }) {
   return (
@@ -18,7 +18,7 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
           key={item.to}
           to={item.to as never}
           onClick={onNavigate}
-          activeOptions={{ exact: item.exact }}
+          activeOptions={{ exact: !!item.exact }}
           className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground transition-colors hover:bg-muted"
           activeProps={{ className: "!bg-sidebar-accent !text-sidebar-accent-foreground font-medium" }}
         >
@@ -98,7 +98,7 @@ export function AppShell({
   );
 }
 
-export function PageHeader({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) {
+export function PageHeader({ title, description, actions }: { title: string; description?: string | undefined; actions?: ReactNode }) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>

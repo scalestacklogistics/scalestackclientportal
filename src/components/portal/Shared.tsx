@@ -57,7 +57,7 @@ export function NotificationsView({ userId }: { userId: string }) {
   );
 }
 
-export function AccountSettings({ userId, email }: { userId: string; email?: string }) {
+export function AccountSettings({ userId, email }: { userId: string; email?: string | undefined }) {
   const qc = useQueryClient();
   const profile = useQuery({
     queryKey: ["profile", userId],
@@ -72,16 +72,16 @@ export function AccountSettings({ userId, email }: { userId: string; email?: str
     e.preventDefault();
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: name ?? profile.data?.full_name, phone: phone ?? profile.data?.phone, updated_at: new Date().toISOString() })
+      .update({ full_name: name ?? profile.data?.full_name ?? null, phone: phone ?? profile.data?.phone ?? null, updated_at: new Date().toISOString() })
       .eq("id", userId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Profile saved");
     qc.invalidateQueries({ queryKey: ["profile", userId] });
   }
   async function changePassword(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.auth.updateUser({ password: pw, current_password: current } as never);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Password updated");
     setPw("");
     setCurrent("");
