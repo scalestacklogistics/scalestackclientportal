@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { RecordForm, clientField } from "./ResourcePage";
 import { inviteUser } from "@/lib/admin.functions";
 
-export function InviteDialog({ open, onClose, role, clientId }: { open: boolean; onClose: () => void; role: "client" | "team"; clientId?: string }) {
+export function InviteDialog({ open, onClose, role, clientId }: { open: boolean; onClose: () => void; role: "client" | "team"; clientId?: string | undefined }) {
   const invite = useServerFn(inviteUser);
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>

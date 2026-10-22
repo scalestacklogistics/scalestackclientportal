@@ -72,7 +72,7 @@ export function AccountSettings({ userId, email }: { userId: string; email?: str
     e.preventDefault();
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: name ?? profile.data?.full_name, phone: phone ?? profile.data?.phone, updated_at: new Date().toISOString() })
+      .update({ full_name: name ?? profile.data?.full_name ?? null, phone: phone ?? profile.data?.phone ?? null, updated_at: new Date().toISOString() })
       .eq("id", userId);
     if (error) return toast.error(error.message);
     toast.success("Profile saved");

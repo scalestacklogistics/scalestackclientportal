@@ -14,7 +14,7 @@ import { EmptyState, PageHeader } from "./AppShell";
 import { logAudit } from "@/lib/auth";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Row = Record<string, any>;
+type Row = any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
 
