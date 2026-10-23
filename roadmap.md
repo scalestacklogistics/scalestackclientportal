@@ -11,3 +11,8 @@
 - [ ] Client-specific notifications from admin
 - [ ] Search, filters, sorting, pagination, confirm dialogs in tables
 - [ ] Test main admin workflows; checklist + remaining security gaps
+- [ ] Client: ticket replies (conversation per ticket)
+- [ ] Client: report metrics display
+- [ ] Client: dashboard personalized by assigned service categories; hide irrelevant sections
+- [ ] Client: mobile-friendly layouts
+- [ ] Test with two client accounts via real API (rows, files, notifications)
