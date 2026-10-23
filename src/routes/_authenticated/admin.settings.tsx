@@ -18,6 +18,7 @@ function Settings() {
           <div>
             <h2 className="mb-3 text-lg font-semibold">Invitations</h2>
             <ResourcePage header={false} title="Invitations" table="invitations" select="*, clients(company_name)" canCreate={false} canEdit={false}
+              searchKeys={["email", "clients.company_name"]}
               columns={[
                 { key: "email", label: "Email", className: "font-medium" },
                 { key: "role", label: "Role", className: "capitalize" },
@@ -27,7 +28,9 @@ function Settings() {
           </div>
           <div>
             <h2 className="mb-3 text-lg font-semibold">Audit log</h2>
-            <ResourcePage header={false} title="Audit log" table="audit_logs" canCreate={false} canEdit={false} canDelete={false}
+            <ResourcePage header={false} title="Audit log" table="audit_logs" canCreate={false} canEdit={false} canDelete={false} pageSize={25}
+              searchKeys={["action", "entity", "actor_id"]}
+              filters={[{ key: "entity", label: "Records", options: ["clients","projects","milestones","tasks","reports","files","invoices","payments","tickets","meetings","subscriptions","services","plans","service_categories","team_assignments","user_roles","invitations"].map((v) => ({ value: v, label: v })) }]}
               columns={[
                 { key: "created_at", label: "When", render: (r) => fmtDateTime(r.created_at) },
                 { key: "action", label: "Action" },

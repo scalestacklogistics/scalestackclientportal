@@ -36,6 +36,13 @@
       "when": 1792604225375,
       "tag": "0004_plans_view",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792790329709,
+      "tag": "0005_admin_and_portal_features",
+      "breakpoints": true
     }
   ]
 }

@@ -11,6 +11,7 @@ import { EmptyState, PageHeader, StatusBadge } from "@/components/portal/AppShel
 import { ResourcePage, clientField } from "@/components/portal/ResourcePage";
 import { InviteDialog } from "@/components/portal/InviteDialog";
 import { setUserRole } from "@/lib/admin.functions";
+import { ConfirmButton } from "@/components/portal/ConfirmButton";
 
 export const Route = createFileRoute("/_authenticated/admin/team")({
   beforeLoad: ({ context }) => {
@@ -64,9 +65,9 @@ function Team() {
                   <TableCell className="space-x-1">{p.roles.map((r) => <StatusBadge key={r} value={r} />)}</TableCell>
                   <TableCell className="text-right">
                     {p.roles.includes("admin") ? (
-                      <Button variant="ghost" size="sm" onClick={() => toggle(p.id, "admin", false)}>Remove admin</Button>
+                      <ConfirmButton size="sm" label="Remove admin" title="Remove admin access?" description="They keep team access to assigned clients only." onConfirm={() => toggle(p.id, "admin", false)}>Remove admin</ConfirmButton>
                     ) : (
-                      <Button variant="ghost" size="sm" onClick={() => confirm("Give this person full admin access?") && toggle(p.id, "admin", true)}>Make admin</Button>
+                      <ConfirmButton size="sm" label="Make admin" title="Give full admin access?" description="Admins can see every client and manage the whole platform." onConfirm={() => toggle(p.id, "admin", true)}>Make admin</ConfirmButton>
                     )}
                   </TableCell>
                 </TableRow>

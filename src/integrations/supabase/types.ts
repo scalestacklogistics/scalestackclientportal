@@ -554,36 +554,49 @@ export type Database = {
       }
       reports: {
         Row: {
+          category_id: string | null
           client_id: string
           created_at: string
           file_path: string | null
           id: string
+          metrics: Json
           period: string | null
           published: boolean
           summary: string | null
           title: string
         }
         Insert: {
+          category_id?: string | null
           client_id: string
           created_at?: string
           file_path?: string | null
           id?: string
+          metrics?: Json
           period?: string | null
           published?: boolean
           summary?: string | null
           title: string
         }
         Update: {
+          category_id?: string | null
           client_id?: string
           created_at?: string
           file_path?: string | null
           id?: string
+          metrics?: Json
           period?: string | null
           published?: boolean
           summary?: string | null
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "reports_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "reports_client_id_fkey"
             columns: ["client_id"]
@@ -593,9 +606,34 @@ export type Database = {
           },
         ]
       }
+      service_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           category: Database["public"]["Enums"]["service_category"]
+          category_id: string | null
           created_at: string
           description: string | null
           features: string[]
@@ -603,7 +641,8 @@ export type Database = {
           name: string
         }
         Insert: {
-          category: Database["public"]["Enums"]["service_category"]
+          category?: Database["public"]["Enums"]["service_category"]
+          category_id?: string | null
           created_at?: string
           description?: string | null
           features?: string[]
@@ -612,13 +651,22 @@ export type Database = {
         }
         Update: {
           category?: Database["public"]["Enums"]["service_category"]
+          category_id?: string | null
           created_at?: string
           description?: string | null
           features?: string[]
           id?: string
           name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "services_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {
@@ -672,6 +720,54 @@ export type Database = {
           },
         ]
       }
+      tasks: {
+        Row: {
+          assignee_id: string | null
+          client_id: string
+          created_at: string
+          done: boolean
+          due_date: string | null
+          id: string
+          milestone_id: string
+          title: string
+        }
+        Insert: {
+          assignee_id?: string | null
+          client_id: string
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          milestone_id: string
+          title: string
+        }
+        Update: {
+          assignee_id?: string | null
+          client_id?: string
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          milestone_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_assignments: {
         Row: {
           client_id: string
@@ -697,6 +793,48 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_replies: {
+        Row: {
+          author_id: string
+          body: string
+          client_id: string
+          created_at: string
+          id: string
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          client_id: string
+          created_at?: string
+          id?: string
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_replies_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_replies_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
             referencedColumns: ["id"]
           },
         ]
@@ -786,6 +924,10 @@ export type Database = {
       notify_client: {
         Args: { _body: string; _client: string; _link: string; _title: string }
         Returns: undefined
+      }
+      send_client_notification: {
+        Args: { _body: string; _client: string; _title: string }
+        Returns: number
       }
     }
     Enums: {
