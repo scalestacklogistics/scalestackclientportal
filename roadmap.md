@@ -1,8 +1,13 @@
 # Roadmap
 - [x] Database schema, roles, RLS, private storage
 - [x] Client portal pages
-- [ ] Admin area pages
-- [ ] Server-side admin actions (invitations via Cloud Auth invite email)
-- [ ] Harden RLS (team scope on profiles/notifications, profile update check)
+- [x] Admin area pages
+- [x] Server-side admin actions (invitations via Cloud Auth invite email, role changes)
+- [x] Harden RLS (team scope on profiles/notifications, profile update check)
 - [ ] Test access: admin, assigned team member, Client A, Client B
-- [ ] Report remaining security gaps
+- [ ] Client suspension (blocks client access)
+- [ ] Service category management (table instead of fixed list)
+- [ ] Milestone tasks
+- [ ] Client-specific notifications from admin
+- [ ] Search, filters, sorting, pagination, confirm dialogs in tables
+- [ ] Test main admin workflows; checklist + remaining security gaps
