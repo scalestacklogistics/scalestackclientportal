@@ -205,7 +205,7 @@ export function ResourcePage({
   canDelete?: boolean;
   createLabel?: string;
   /** Transform form values before insert/update (e.g. upload files). */
-  prepare?: (values: Row, mode: "create" | "edit") => Promise<Row>;
+  prepare?: (values: Row, mode: "create" | "edit", row?: Row) => Promise<Row>;
   afterSave?: (row: Row, mode: "create" | "edit") => Promise<void>;
   rowActions?: (row: Row, refresh: () => void) => ReactNode;
   header?: boolean;
@@ -258,7 +258,7 @@ export function ResourcePage({
       if (f.type === "datetime" && v) v = new Date(v as string).toISOString();
       payload[f.name] = v;
     }
-    if (prepare) payload = await prepare(payload, mode);
+    if (prepare) payload = await prepare(payload, mode, dialog!.row);
     let saved: Row;
     if (mode === "create") {
       const { data, error } = await db.from(table).insert(payload).select().single();
