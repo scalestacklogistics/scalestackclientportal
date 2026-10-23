@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { ArrowUpDown, ChevronLeft, ChevronRight, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EmptyState, PageHeader } from "./AppShell";
+import { ConfirmButton } from "./ConfirmButton";
 import { logAudit } from "@/lib/auth";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +30,10 @@ export type Field = {
   required?: boolean;
   default?: unknown;
 };
-export type Column = { key: string; label: string; render?: (row: Row) => ReactNode; className?: string };
+export type Column = { key: string; label: string; render?: (row: Row) => ReactNode; className?: string; sortKey?: string };
+export type TableFilter = { key: string; label: string; options: FieldOption[] };
+
+const getPath = (row: Row, path: string) => path.split(".").reduce((o: Row, k) => (o == null ? o : o[k]), row);
 
 export function useOptions(source?: Field["source"]) {
   return useQuery({
@@ -182,6 +186,9 @@ export function ResourcePage({
   afterSave,
   rowActions,
   header = true,
+  searchKeys,
+  filters,
+  pageSize = 15,
 }: {
   title: string;
   description?: string;
@@ -202,7 +209,15 @@ export function ResourcePage({
   afterSave?: (row: Row, mode: "create" | "edit") => Promise<void>;
   rowActions?: (row: Row, refresh: () => void) => ReactNode;
   header?: boolean;
+  /** Row fields (dot paths allowed) matched by the search box. */
+  searchKeys?: string[];
+  filters?: TableFilter[];
+  pageSize?: number;
 }) {
+  const [search, setSearch] = useState("");
+  const [filterVals, setFilterVals] = useState<Record<string, string>>({});
+  const [sort, setSort] = useState<{ key: string; asc: boolean } | null>(null);
+  const [page, setPage] = useState(0);
   const qc = useQueryClient();
   const key = ["resource", table, select, title];
   const [dialog, setDialog] = useState<{ mode: "create" | "edit"; row?: Row } | null>(null);
@@ -273,6 +288,24 @@ export function ResourcePage({
     return init;
   }
 
+  const term = search.trim().toLowerCase();
+  let rows = (list.data ?? []).filter((r) => {
+    if (term && searchKeys && !searchKeys.some((k) => String(getPath(r, k) ?? "").toLowerCase().includes(term))) return false;
+    for (const [k, v] of Object.entries(filterVals)) if (v && String(getPath(r, k)) !== v) return false;
+    return true;
+  });
+  if (sort) {
+    rows = [...rows].sort((a, b) => {
+      const x = getPath(a, sort.key) ?? "", y = getPath(b, sort.key) ?? "";
+      const c = typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true });
+      return sort.asc ? c : -c;
+    });
+  }
+  const pages = Math.max(1, Math.ceil(rows.length / pageSize));
+  const current = Math.min(page, pages - 1);
+  const visible = rows.slice(current * pageSize, (current + 1) * pageSize);
+  const toolbar = (searchKeys?.length || filters?.length) && (list.data?.length ?? 0) > 0;
+
   const showActions = (canEdit && (editFields ?? fields)) || canDelete || rowActions;
 
   return (
@@ -297,6 +330,23 @@ export function ResourcePage({
           </Button>
         </div>
       )}
+      {toolbar ? (
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+          {searchKeys?.length ? (
+            <div className="relative sm:max-w-xs sm:flex-1">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input aria-label="Search" placeholder="Search..." className="pl-9" value={search} onChange={(e) => { setSearch(e.target.value); setPage(0); }} />
+            </div>
+          ) : null}
+          {filters?.map((f) => (
+            <select key={f.key} aria-label={f.label} className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+              value={filterVals[f.key] ?? ""} onChange={(e) => { setFilterVals((s) => ({ ...s, [f.key]: e.target.value })); setPage(0); }}>
+              <option value="">All {f.label.toLowerCase()}</option>
+              {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          ))}
+        </div>
+      ) : null}
       <div className="overflow-hidden rounded-xl border bg-card shadow-card">
         {list.isLoading ? (
           <EmptyState text="Loading..." />
@@ -304,6 +354,8 @@ export function ResourcePage({
           <EmptyState text={(list.error as Error).message} />
         ) : !list.data?.length ? (
           <EmptyState text="Nothing here yet." />
+        ) : !rows.length ? (
+          <EmptyState text="No records match your search." />
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -311,14 +363,21 @@ export function ResourcePage({
                 <TableRow className="bg-muted/50">
                   {columns.map((c) => (
                     <TableHead key={c.key} className="text-xs font-medium uppercase tracking-wide">
-                      {c.label}
+                      {c.sortKey ?? (!c.render ? c.key : undefined) ? (
+                        <button className="inline-flex items-center gap-1 uppercase" onClick={() => {
+                          const k = c.sortKey ?? c.key;
+                          setSort((s) => (s?.key === k ? { key: k, asc: !s.asc } : { key: k, asc: true }));
+                        }}>
+                          {c.label} <ArrowUpDown className="h-3 w-3" />
+                        </button>
+                      ) : c.label}
                     </TableHead>
                   ))}
                   {showActions && <TableHead />}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {list.data.map((row) => (
+                {visible.map((row) => (
                   <TableRow key={row.id}>
                     {columns.map((c) => (
                       <TableCell key={c.key} className={c.className}>
@@ -334,14 +393,14 @@ export function ResourcePage({
                           </Button>
                         )}
                         {canDelete && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            aria-label="Delete"
-                            onClick={() => confirm("Delete this record?") && del.mutate(row.id)}
+                          <ConfirmButton
+                            label="Delete"
+                            title="Delete this record?"
+                            description="This cannot be undone."
+                            onConfirm={() => del.mutate(row.id)}
                           >
                             <Trash2 />
-                          </Button>
+                          </ConfirmButton>
                         )}
                       </TableCell>
                     )}
@@ -349,6 +408,15 @@ export function ResourcePage({
                 ))}
               </TableBody>
             </Table>
+            {pages > 1 && (
+              <div className="flex items-center justify-between border-t px-4 py-2.5 text-sm text-muted-foreground">
+                <span>{rows.length} records · page {current + 1} of {pages}</span>
+                <div className="flex gap-1">
+                  <Button variant="ghost" size="icon" aria-label="Previous page" disabled={current === 0} onClick={() => setPage(current - 1)}><ChevronLeft /></Button>
+                  <Button variant="ghost" size="icon" aria-label="Next page" disabled={current >= pages - 1} onClick={() => setPage(current + 1)}><ChevronRight /></Button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
