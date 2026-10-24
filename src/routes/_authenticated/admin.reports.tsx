@@ -8,7 +8,7 @@ import { ResourcePage, clientCol, clientField, fmtDate, openClientFile, uploadCl
 import { StatusBadge } from "@/components/portal/AppShell";
 import { ConfirmButton } from "@/components/portal/ConfirmButton";
 import { logAudit } from "@/lib/auth";
-import { metricsToText, parseMetrics } from "@/lib/metrics";
+import { parseMetrics } from "@/lib/metrics";
 
 export const Route = createFileRoute("/_authenticated/admin/reports")({
   head: () => ({ meta: [{ title: "Reports | ScaleStack Admin" }] }),
@@ -75,4 +75,3 @@ function Reports() {
   );
 }
 
-export { metricsToText };
