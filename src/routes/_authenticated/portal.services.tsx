@@ -16,7 +16,7 @@ function Services() {
   const q = useQuery({
     queryKey: ["portal-subs", client.id],
     queryFn: async () =>
-      (await supabase.from("subscriptions").select("*, plans(*, services(*))").eq("client_id", client.id).order("created_at")).data ?? [],
+      (await supabase.from("subscriptions").select("*, plans(*, services(*, service_categories(name)))").eq("client_id", client.id).order("created_at")).data ?? [],
   });
   return (
     <div>
@@ -27,7 +27,7 @@ function Services() {
           <div key={s.id} className="rounded-xl border bg-card p-6 shadow-card">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-xs font-medium uppercase tracking-wide text-primary">{s.plans?.name} plan</div>
+                <div className="text-xs font-medium uppercase tracking-wide text-primary">{s.plans?.services?.service_categories?.name ?? "Service"} · {s.plans?.name} plan</div>
                 <h3 className="mt-1 text-lg font-semibold">{s.plans?.services?.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{s.plans?.services?.description}</p>
               </div>

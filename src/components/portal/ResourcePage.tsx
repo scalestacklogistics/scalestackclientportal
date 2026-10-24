@@ -283,6 +283,7 @@ export function ResourcePage({
       let v = mode === "edit" ? row?.[f.name] : f.default;
       if (f.type === "datetime" && v) v = new Date(v).toISOString().slice(0, 16);
       if (f.type === "file") v = null;
+      if (f.type === "textarea" && Array.isArray(v)) v = v.map((m: Row) => `${m.label}: ${m.value}`).join("\n");
       init[f.name] = v ?? (f.type === "checkbox" ? false : "");
     }
     return init;

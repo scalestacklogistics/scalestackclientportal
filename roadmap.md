@@ -16,3 +16,4 @@
 - [ ] Client: dashboard personalized by assigned service categories; hide irrelevant sections
 - [ ] Client: mobile-friendly layouts
 - [ ] Test with two client accounts via real API (rows, files, notifications)
+- [ ] Full review: real-API tests for auth, roles, RLS, isolation, files, invites, reports, invoices, tickets, notifications; report
