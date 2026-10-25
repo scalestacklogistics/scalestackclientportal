@@ -19,8 +19,8 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
           to={item.to as never}
           onClick={onNavigate}
           activeOptions={{ exact: !!item.exact }}
-          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground transition-colors hover:bg-muted"
-          activeProps={{ className: "!bg-sidebar-accent !text-sidebar-accent-foreground font-medium" }}
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-sidebar-foreground transition-colors hover:bg-muted"
+          activeProps={{ className: "!bg-sidebar-accent !text-sidebar-accent-foreground font-bold" }}
         >
           <item.icon className="h-4 w-4 shrink-0" />
           {item.label}
@@ -85,6 +85,9 @@ export function AppShell({
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
             <Menu />
           </Button>
+          <div className="pointer-events-none absolute inset-x-0 top-0 flex h-14 items-center justify-center lg:hidden">
+            <Logo markOnly />
+          </div>
           <div className="hidden lg:block" />
           <Button variant="ghost" size="icon" asChild aria-label="Notifications">
             <Link to={notificationsTo as never}>
@@ -102,7 +105,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex gap-2">{actions}</div>}
@@ -115,7 +118,7 @@ export function Panel({ title, action, children, className }: { title?: string; 
     <section className={cn("rounded-xl border bg-card shadow-card", className)}>
       {title && (
         <div className="flex items-center justify-between border-b px-5 py-3.5">
-          <h2 className="text-sm font-semibold">{title}</h2>
+          <h2 className="text-sm font-bold">{title}</h2>
           {action}
         </div>
       )}
@@ -128,12 +131,12 @@ export function StatCard({ label, value, icon: Icon, hint }: { label: string; va
   return (
     <div className="rounded-xl border bg-card p-5 shadow-card">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{label}</span>
+        <span className="text-sm font-semibold text-muted-foreground">{label}</span>
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-soft text-primary">
           <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className="mt-3 text-2xl font-semibold">{value}</div>
+      <div className="mt-3 text-2xl font-bold">{value}</div>
       {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
@@ -157,7 +160,7 @@ const statusTone: Record<string, string> = {
 export function StatusBadge({ value }: { value?: string | null }) {
   if (!value) return null;
   return (
-    <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize", statusTone[value] ?? "bg-muted text-muted-foreground")}>
+    <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-bold capitalize", statusTone[value] ?? "bg-muted text-muted-foreground")}>
       {value.replace(/_/g, " ")}
     </span>
   );
