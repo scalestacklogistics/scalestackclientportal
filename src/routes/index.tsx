@@ -44,10 +44,10 @@ function Index() {
       </header>
       <main className="mx-auto max-w-6xl px-6 pb-20 pt-16">
         <div className="max-w-2xl">
-          <span className="inline-flex rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+          <span className="inline-flex rounded-full border bg-card px-3 py-1 text-xs font-semibold text-muted-foreground">
             ScaleStack Technologies
           </span>
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Your agency work, <span className="text-primary">fully visible.</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
@@ -67,7 +67,7 @@ function Index() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-soft text-primary">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 font-medium">{f.title}</h3>
+              <h3 className="mt-4 font-bold">{f.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
             </div>
           ))}

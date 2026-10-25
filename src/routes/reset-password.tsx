@@ -41,7 +41,7 @@ function ResetPassword() {
           <Logo />
         </div>
         <form onSubmit={submit} className="space-y-4 rounded-xl border bg-card p-6 shadow-card">
-          <h1 className="text-lg font-semibold">Set a new password</h1>
+          <h1 className="text-lg font-bold">Set a new password</h1>
           <div className="space-y-1.5">
             <Label htmlFor="pw">New password</Label>
             <Input id="pw" type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required />
