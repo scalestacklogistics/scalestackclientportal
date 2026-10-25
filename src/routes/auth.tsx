@@ -82,7 +82,7 @@ function AuthPage() {
           <Logo />
         </div>
         <div className="rounded-xl border bg-card p-6 shadow-card">
-          <h1 className="text-lg font-semibold">
+          <h1 className="text-lg font-bold">
             {mode === "signin" ? "Welcome back" : mode === "signup" ? "Accept your invitation" : "Reset password"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -141,12 +141,12 @@ function AuthPage() {
             {mode === "signin" ? (
               <>
                 Invited to the portal?{" "}
-                <button className="font-medium text-primary" onClick={() => setMode("signup")}>
+                <button className="font-semibold text-primary" onClick={() => setMode("signup")}>
                   Create your account
                 </button>
               </>
             ) : (
-              <button className="font-medium text-primary" onClick={() => setMode("signin")}>
+              <button className="font-semibold text-primary" onClick={() => setMode("signin")}>
                 Back to sign in
               </button>
             )}

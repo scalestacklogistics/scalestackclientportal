@@ -55,7 +55,7 @@ function PortalLayout() {
           <div className="mb-4 flex justify-center">
             <Logo />
           </div>
-          <h1 className="text-lg font-semibold">Your account is not linked yet</h1>
+          <h1 className="text-lg font-bold">Your account is not linked yet</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Signed in as {user.email}. Your ScaleStack account manager needs to invite this email address to your company
             workspace. Contact us if you think this is a mistake.
