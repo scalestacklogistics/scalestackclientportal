@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Official logo (sidebar, login, favicon) + brand palette applied
 - [x] Database schema, roles, RLS, private storage
 - [x] Client portal pages
 - [x] Admin area pages

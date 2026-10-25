@@ -1,11 +1,9 @@
-import { Layers } from "lucide-react";
+import logoAsset from "@/assets/scalestack-logo.png.asset.json";
 
 export function Logo({ subtitle }: { subtitle?: string }) {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Layers className="h-4 w-4" />
-      </div>
+      <img src={logoAsset.url} alt="ScaleStack Technologies" className="h-8 w-auto shrink-0" />
       <div className="leading-tight">
         <div className="text-sm font-semibold text-foreground">ScaleStack</div>
         <div className="text-[11px] text-muted-foreground">{subtitle ?? "Client Portal"}</div>
